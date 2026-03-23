@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "zerovault"
+version = "0.1.0"
+description = "Zero-knowledge password manager — server never sees plaintext"
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+# ── Runtime dependencies ──────────────────────────────────────────────────────
+dependencies = [
+    # Web framework
+    "fastapi>=0.135.1",
+    "uvicorn[standard]>=0.34.0",
+    "python-multipart>=0.0.20",
+
+    # Database (async)
+    "sqlalchemy[asyncio]>=2.0.40",
+    "asyncpg>=0.30.0",
+    "alembic>=1.14.0",
+
+    # Validation & settings
+    "pydantic>=2.11.2",
+    "pydantic-settings>=2.9.1",
+
+    # Cryptography
+    "cryptography>=44.0.3",       # AES-256-GCM, HKDF
+    "argon2-cffi>=25.1.0",        # Argon2id key derivation
+    "bcrypt>=4.3.0",               # Server-side auth-key hashing
+
+    # Auth
+    "PyJWT>=2.10.1",
+
+    # HTTP client (Reflex state → FastAPI calls)
+    "httpx>=0.28.1",
+
+    # Frontend
+    "reflex>=0.8.27",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.25.3",
+    "anyio[asyncio]>=4.9.0",
+    "aiosqlite>=0.21.0",          # In-memory SQLite for integration tests
+    "httpx>=0.28.1",
+]
+dev = [
+    "ruff>=0.9.0",
+    "mypy>=1.15.0",
+]
+
+# ── Package discovery ─────────────────────────────────────────────────────────
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["crypto*", "backend*", "app*"]
+
+# ── Pytest configuration ──────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+asyncio_mode       = "auto"          # All async test functions run under asyncio
+asyncio_default_fixture_loop_scope = "session"
+testpaths          = ["tests"]
+pythonpath         = ["."]           # Make crypto/, backend/, app/ importable
+addopts            = "-v --tb=short"
+
+# ── Ruff linting ──────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+# ── Mypy ─────────────────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
