@@ -132,14 +132,14 @@ sequenceDiagram
 
 | Layer | Technology | Version |
 |-------|-----------|---------|
-| Frontend | [Reflex](https://reflex.dev) (pure Python) | 0.7.x |
-| Backend | [FastAPI](https://fastapi.tiangolo.com) | 0.115.x |
+| Frontend | [Reflex](https://reflex.dev) (pure Python) | 0.8.x |
+| Backend | [FastAPI](https://fastapi.tiangolo.com) | 0.135.x |
 | Database | PostgreSQL + SQLAlchemy async ORM | PG 16, SA 2.0 |
 | Password KDF | Argon2id via `argon2-cffi` | 25.1.0 |
-| Vault encryption | AES-256-GCM via `cryptography` | 44.0.0 |
-| Key expansion | HKDF-SHA256 via `cryptography` | 44.0.0 |
+| Vault encryption | AES-256-GCM via `cryptography` | 46.0.x |
+| Key expansion | HKDF-SHA256 via `cryptography` | 46.0.x |
 | Auth storage | bcrypt via `bcrypt` | 4.2.x |
-| Auth tokens | JWT via `PyJWT` | 2.10.x |
+| Auth tokens | JWT via `PyJWT` | 2.12.x |
 | Testing | pytest + pytest-asyncio | 8.x / 0.25.x |
 | Containers | Docker Compose | — |
 
@@ -218,11 +218,23 @@ python -c "import secrets; print(secrets.token_hex(32))"
 docker compose up --build
 ```
 
+Default host ports are intentionally non-standard to reduce collisions when
+running multiple projects in parallel. You can override them with environment
+variables before starting Compose:
+
+```bash
+ZV_DB_PORT=55439
+ZV_BACKEND_PORT=38170
+ZV_FRONTEND_PORT=37420
+ZV_REFLEX_BACKEND_PORT=38171
+docker compose up --build
+```
+
 Services will start on:
-- Frontend (Reflex): http://localhost:3000
-- Backend (FastAPI): http://localhost:8000
-- API docs: http://localhost:8000/docs
-- Database: localhost:5432
+- Frontend (Reflex): http://localhost:37420
+- Backend (FastAPI): http://localhost:38170
+- API docs: http://localhost:38170/docs
+- Database: localhost:55439
 
 ### 3. Local development (without Docker)
 
@@ -239,7 +251,7 @@ pip install aiosqlite            # For tests
 docker compose up db -d
 
 # Run FastAPI
-uvicorn zerovault.app.main:app --reload --port 8000
+uvicorn zerovault.app.main:app --reload --port 38170
 ```
 
 **Frontend:**
@@ -252,6 +264,12 @@ pip install -r requirements.txt
 reflex init
 reflex run
 ```
+
+Reflex development defaults are configured in `frontend/rxconfig.py` and can
+also be overridden with:
+
+- `ZV_FRONTEND_PORT` (default `37420`)
+- `ZV_REFLEX_BACKEND_PORT` (default `38171`)
 
 ---
 

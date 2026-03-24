@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     # ── Database ─────────────────────────────────────────────────────────────
     database_url: str = (
-        "postgresql+asyncpg://zerovault:zerovault@localhost:5432/zerovault"
+        "postgresql+asyncpg://zerovault:zerovault@localhost:55439/zerovault"
     )
 
     # ── JWT ───────────────────────────────────────────────────────────────────

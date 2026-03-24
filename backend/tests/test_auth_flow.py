@@ -273,7 +273,8 @@ async def test_vault_create_list_delete(async_client: AsyncClient):
 async def test_vault_requires_authentication(async_client: AsyncClient):
     """Unauthenticated requests to vault endpoints must be rejected."""
     response = await async_client.get("/vault/entries")
-    assert response.status_code == 403
+    # starlette>=1.0 HTTPBearer returns 401 (RFC 7235 compliant); older returned 403
+    assert response.status_code in (401, 403)
 
 
 @pytest.mark.asyncio

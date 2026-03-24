@@ -32,6 +32,7 @@ as a known architectural limitation.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -66,7 +67,7 @@ except ImportError:
         return 4
 
 
-BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:38170")
 
 STRENGTH_LABELS = ["Very Weak", "Weak", "Fair", "Strong", "Very Strong"]
 STRENGTH_COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#10b981"]

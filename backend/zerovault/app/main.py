@@ -14,6 +14,7 @@ The create_all call here is retained for ease of local development and tests.
 
 from __future__ import annotations
 
+import os
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -26,6 +27,17 @@ from zerovault.app.models import Base
 from zerovault.app.routers import auth_router, vault_router
 
 settings = get_settings()
+
+default_origins = [
+    "http://localhost:37420",
+    "http://127.0.0.1:37420",
+]
+configured_origins = os.getenv("CORS_ALLOWED_ORIGINS", "")
+allowed_origins = [
+    origin.strip()
+    for origin in configured_origins.split(",")
+    if origin.strip()
+] or default_origins
 
 
 @asynccontextmanager
@@ -49,13 +61,10 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS: allow the Reflex frontend (runs on port 3000 by default)
+# CORS: allow frontend origins from env, or randomized local defaults.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

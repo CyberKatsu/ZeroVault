@@ -1,20 +1,20 @@
 # ── Web framework ──────────────────────────────────────────────────────────────
-fastapi==0.115.6
+fastapi==0.135.2           # 0.135.x pulls starlette>=0.46; fixes CVE-2025-54121 & CVE-2025-62727
 uvicorn[standard]==0.32.1
-python-multipart==0.0.20   # Required for FastAPI form parsing
+python-multipart==0.0.22   # CVE-2026-24486 fix (was 0.0.20)
 
 # ── Database ───────────────────────────────────────────────────────────────────
 sqlalchemy==2.0.36
 asyncpg==0.30.0            # Async PostgreSQL driver (pinned below 0.29 issues resolved in 0.30)
-alembic==1.14.0            # Database migrations
+alembic==1.15.2            # Database migrations (bumped to satisfy reflex 0.8 if run in same env)
 
 # ── Cryptography ───────────────────────────────────────────────────────────────
-cryptography==44.0.0       # AES-256-GCM, HKDF — hazmat primitives
+cryptography==46.0.5       # CVE-2024-12797 & CVE-2026-26007 fixes (was 44.0.0)
 argon2-cffi==25.1.0        # Argon2id password hashing (winner of PHC)
 bcrypt==4.2.1              # bcrypt for server-side auth_key hashing
 
 # ── Authentication ─────────────────────────────────────────────────────────────
-PyJWT==2.10.1              # JSON Web Tokens — python-jose has known CVEs; prefer PyJWT
+PyJWT==2.12.1              # CVE-2026-32597 fix (was 2.10.1); python-jose has known CVEs
 
 # ── Data validation ────────────────────────────────────────────────────────────
 pydantic==2.10.3

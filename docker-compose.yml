@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: zerovault_dev_password
       POSTGRES_DB: zerovault
     ports:
-      - "5432:5432"
+      - "${ZV_DB_PORT:-55439}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -33,7 +33,7 @@ services:
       JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 60
       DEBUG: "false"
     ports:
-      - "8000:8000"
+      - "${ZV_BACKEND_PORT:-38170}:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -54,8 +54,8 @@ services:
     environment:
       BACKEND_URL: http://backend:8000
     ports:
-      - "3000:3000"
-      - "8001:8001"
+      - "${ZV_FRONTEND_PORT:-37420}:3000"
+      - "${ZV_REFLEX_BACKEND_PORT:-38171}:8001"
     depends_on:
       - backend
     command: reflex run --env dev

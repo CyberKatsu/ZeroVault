@@ -1,8 +1,12 @@
 # ── Reflex full-stack Python framework ────────────────────────────────────────
-reflex==0.7.14
+# NOTE: CVE-2025-62379 was present in 0.7.14; 0.8.28.post1 updates the
+# internal Starlette/granian stack which resolves the underlying issue.
+# The Python State/component API is backward compatible, but manual UI
+# verification is recommended after this upgrade.
+reflex==0.8.28.post1
 
 # ── Cryptography (same stack as backend — crypto runs in Reflex State = client)
-cryptography==44.0.0
+cryptography==46.0.5       # CVE-2024-12797 & CVE-2026-26007 fixes (was 44.0.0)
 argon2-cffi==25.1.0
 
 # ── HTTP client for calling FastAPI backend ────────────────────────────────────
