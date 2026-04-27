@@ -6,6 +6,10 @@
 [![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![Login screen](docs/screenshot.png)
+![Password entry](image.png)
+![Password list](image-1.png)
+
 ---
 
 ## What is Zero-Knowledge?

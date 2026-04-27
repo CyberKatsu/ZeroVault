@@ -53,6 +53,9 @@ services:
     restart: unless-stopped
     environment:
       BACKEND_URL: http://backend:8000
+      ZV_FRONTEND_PORT: 3000
+      ZV_REFLEX_BACKEND_PORT: 8001
+      REFLEX_API_URL: "http://localhost:38171"
     ports:
       - "${ZV_FRONTEND_PORT:-37420}:3000"
       - "${ZV_REFLEX_BACKEND_PORT:-38171}:8001"

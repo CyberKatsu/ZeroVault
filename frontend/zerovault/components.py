@@ -212,7 +212,7 @@ def login_page() -> rx.Component:
                                 font_size="0.85rem",
                                 cursor="pointer",
                                 on_click=ZeroVaultState.go_to_register,
-                                padding="0",
+                                padding="10",
                                 background="transparent",
                                 border="none",
                                 _hover={"color": "#818cf8"},
